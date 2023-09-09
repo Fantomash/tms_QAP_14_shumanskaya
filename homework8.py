@@ -1,54 +1,64 @@
-class Movie:
-    # 1 Реализовать конструкторы для инициализации
-    def __init__(self, name, rating, year, director):
-        self.name = name
-        self.rating = rating
-        self.year = year
-        self.director = director
+# 1 Напишите декоратор, который проверял бы тип параметров
+# функции, конвертировал их если надо и складывал:
+# @typed(type=’str’)
+# def add_two_symbols(a, b):
+# return a + b
+# add_two_symbols("3", 5) -> "35"
+# add_two_symbols(5, 5) -> 55
+# add_two_symbols('a', 'b') -> 'ab’
+# @typed(type=’int’)
+# def add_three_symbols(a, b, с):
+# return a + b + с
+# add_three_symbols(5, 6, 7) -> 18
+# add_three_symbols("3", 5, 0) -> 8
+# add_three_symbols(0.1, 0.2, 0.4) -> 0.7000000000000001
 
-    # 4 Реализовать инкапсуляцию методов
-    def __set_director(self, new_director):
-        self.director = new_director
-    # 2 Реализовать вывод данных в основном и дополнительном классе
-    # 3 Реализовать полиморфизм (перегрузка)
-    def print_info(self, viewer_name=None):
-        if viewer_name is not None:
-            print("\nHello,", viewer_name, "\nYou are going to watch", self.name, "film directed by", self.director,
-                  "\n(this is call for Parent class, there is viewer name)")
-        else:
-            print("\nYou are going to watch", self.name, "film directed by", self.director,
-                  "\n(this is call for Parent class, there is no viewer name)")
+def typed(type):
+    def decorator(func):
+        def wrapper(*args):
+            args = (type(arg) for arg in args)
+            return func(*args)
+        return wrapper
+    return decorator
 
+@typed(str)
+def add_two_symbols(a, b):
+    return a + b
 
-# 3 Реализовать полиморфизм (наследование)
-class Comedy(Movie):
+print(add_two_symbols("3", 5))
+print(add_two_symbols(5, 5))
+print(add_two_symbols('a', 'b'))
 
-    # 1 Реализовать конструкторы для инициализации
-    def __init__(self, name, rating, year, director, country, _is_funny=True):
-        super().__init__(name, rating, year, director)
-        self.country = country
-        #4 Реализовать инкапсуляцию свойств
-        self._is_funny = _is_funny
+@typed(type=int)
+def add_three_symbols(a, b, с):
+    return a + b + с
 
+print(add_three_symbols(5, 6, 7))
+print(add_three_symbols("3", 5, 0))
+print(add_three_symbols(0.1, 0.2, 0.4))
 
-    # 2 Реализовать вывод данных в основном и дополнительном классе
-    # 3 Реализовать полиморфизм (переопределение)
-    def print_info(self, platform, viewer_name=None):
-        if viewer_name is not None:
-            print("\nHello,", viewer_name, "\nYou are going to watch the funniest movie", self.name, "directed by", self.director,
-                  "on the platform", platform, "\nThis film was produced in", self.country,
-                  "\n(this is call for Child class, there is no viewer name)")
-        else:
-            print("\nYou are going to watch the funniest movie", self.name, "directed by", self.director,
-                  "\nThis film was produced in", self.country,
-                  "\n(this is call for Child class, there is viewer name)")
+# 2 Лексикографическое возрастание
+# На вход подаётся некоторое количество (не больше сотни)
+# разделённых пробелом целых чисел (каждое не меньше 0 и не
+# больше 19). Выведите их через пробел в порядке
+# лексикографического возрастания названий этих чисел в
+# английском языке.Т.е., скажем числа 1, 2, 3 должны быть
+# выведены в порядке 1, 3, 2, поскольку слово two в словаре
+# встречается позже слова three, а слово three -- позже слова one
+# (иначе говоря, поскольку выражение 'one' < 'three' < 'two'
+# является истинным)
+# number_names = {0: 'zero', 1: 'one', 2: 'two', 3: 'three', 4: 'four', 5:
+# 'five', 6: 'six', 7: 'seven', 8: 'eight', 9: 'nine', 10: 'ten', 11: 'eleven', 12:
+# 'twelve',13: 'thirteen', 14: 'fourteen', 15: 'fifteen', 16: 'sixteen', 17:
+# 'seventeen', 18: 'eighteen', 19: 'nineteen'}
 
+number_names = {0: 'zero', 1: 'one', 2: 'two', 3: 'three', 4: 'four', 5:
+'five', 6: 'six', 7: 'seven', 8: 'eight', 9: 'nine', 10: 'ten', 11: 'eleven', 12:
+'twelve',13: 'thirteen', 14: 'fourteen', 15: 'fifteen', 16: 'sixteen', 17:
+'seventeen', 18: 'eighteen', 19: 'nineteen'}
 
-
-movie_1 = Movie("Zodiak", 8.0, 2007, "David Fincher")
-movie_1.print_info()
-movie_1.print_info("John")
-
-movie_2 = Comedy("Zodiak", 8.0, 2007, "David Fincher", "USA")
-movie_2.print_info("Netflix")
-movie_2.print_info("Netflix", "Josef")
+input_numbers = input("Введите числа от 0 до 19, разделённые пробелом: ")
+numbers = input_numbers.split()
+input_names = [number_names[int(num)] for num in numbers]
+sorted_numbers = sorted(input_names)
+print(sorted_numbers)
