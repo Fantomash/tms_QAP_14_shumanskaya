@@ -9,13 +9,16 @@ nums_1 = [random.randint(0, 500) for _ in range(10)]
 with open('nums.txt', 'w') as f:
     f.write(str(nums_1))
 
-int_list = [int(x) for x in nums_1]
-if len(int_list) < 3:
+with open('nums.txt', 'r') as f:
+    content = f.read()
+    numbers = eval(content)
+
+if len(numbers) < 3:
     print("The file is too short")
 else:
-    print(int_list[0])
-    print(int_list[1])
-    print(int_list[-2])
+    print(numbers[0])
+    print(numbers[1])
+    print(numbers[-2])
 print("---The end of exercise #1---" + '\n')
 
 
